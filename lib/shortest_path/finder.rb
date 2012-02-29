@@ -7,6 +7,7 @@ module ShortestPath
 
     def initialize(source, destination)
       @source, @destination = source, destination
+      @visited = {}
     end
 
     # Should return a map with accessible nodes and associated weight
@@ -45,7 +46,19 @@ module ShortestPath
       (end_at or Time.now) - begin_at
     end
 
-    def path
+    def visited?(node)
+      @visited[node]      
+    end
+
+    def visit(node)
+      @visited[node] = true
+    end
+
+    def found?(node)
+      node == destination
+    end
+
+    def path_without_cache
       @begin_at = Time.now
       
       visited = {}
@@ -54,22 +67,22 @@ module ShortestPath
       end
 
       pq.push(source)
-      visited[source] = true
+      visit source
       shortest_distances[source] = 0
 
-      not_found = (source != destination)
+      not_found = !found?(source)
 
       while pq.size != 0 && not_found
         raise TimeoutError if timeout?
 
         v = pq.pop
-        not_found = (v != destination)
-        visited[v] = true
+        not_found = !found?(v)
+        visit v
 
         weights = ways(v)
         if weights
           weights.keys.each do |w|
-            if !visited[w] and
+            if !visited?(w) and
                 weights[w] and
                 ( shortest_distances[w].nil? || shortest_distances[w] > shortest_distances[v] + weights[w]) and 
                 follow_way?(v, w, weights[w])
@@ -85,14 +98,19 @@ module ShortestPath
       not_found ? [] : sorted_array
     end
 
+    def path_with_cache
+      @path ||= path_without_cache
+    end
+    alias_method :path, :path_with_cache
+
     def sorted_array
       [].tap do |sorted_array|
         previous_id = destination
         previous.size.times do |t|
           sorted_array.unshift(previous_id)
           break if previous_id == source
-          previous_id = previous[ previous_id]
-          raise "Unknown #{previous_id}" unless previous_id
+          previous_id = previous[previous_id]
+          raise "Unknown #{previous_id.inspect}" unless previous_id
         end
       end
     end
