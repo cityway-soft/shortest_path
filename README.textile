@@ -1,1 +1,0 @@
-A* ruby implementation to find shortest path and map in a graph.
