@@ -5,13 +5,11 @@ require "shortest_path/version"
 Gem::Specification.new do |s|
   s.name        = "shortest_path"
   s.version     = ShortestPath::VERSION
-  s.authors     = ["Alban Peignier", "Marc Florisson"]
-  s.email       = ["alban@dryade.net", "marc@dryade.net"]
+  s.authors     = ["Alban Peignier", "Marc Florisson", "Luc Donnet"]
+  s.email       = ["alban@tryphon.eu", "mflorisson@cityway.fr", "luc.donnet@free.fr"]
   s.homepage    = "http://github.com/dryade/shortest_path"
   s.summary     = %q{Ruby library to find shortest path(s) in a graph}
   s.description = %q{A* ruby implementation to find shortest path and map}
-
-  s.rubyforge_project = "shortest_path"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
