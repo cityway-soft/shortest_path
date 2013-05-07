@@ -1,11 +1,11 @@
-# Shortest Path[![Build Status](https://travis-ci.org/dryade/shortest_path.png)](http://travis-ci.org/dryade/shortest_path?branch=master) [![Dependency Status](https://gemnasium.com/dryade/shortest_path.png)](https://gemnasium.com/dryade/shortest_path) [![Code Climate](https://codeclimate.com/github/dryade/shortest_path.png)](https://codeclimate.com/github/dryade/shortest_path)
+# Shortest Path  [![Build Status](https://travis-ci.org/dryade/shortest_path.png)](http://travis-ci.org/dryade/shortest_path?branch=master) [![Dependency Status](https://gemnasium.com/dryade/shortest_path.png)](https://gemnasium.com/dryade/shortest_path) [![Code Climate](https://codeclimate.com/github/dryade/shortest_path.png)](https://codeclimate.com/github/dryade/shortest_path)
 
 A* ruby implementation to find shortest path and map in a graph.
 
 Requirements
 ------------
  
-This code has been run and tested on Ruby 1.8
+This code has been run and tested on Ruby 1.8 and 1.9
 
 Installation
 ------------
