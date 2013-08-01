@@ -30,6 +30,14 @@ module ShortestPath
       @previous ||= {}
     end
 
+    # @context is a hash
+    # each node is related to an hash defining the context
+    # context is specific to the path solution between departure dans target node
+    #
+    def context
+      @context ||= {}
+    end
+
     def search_heuristic(node)
       shortest_distances[node]
     end
@@ -67,36 +75,34 @@ module ShortestPath
 
       visited = {}
       pq = PQueue.new do |x,y|
-        search_heuristic(x.node) < search_heuristic(y.node)
+        search_heuristic(x) < search_heuristic(y)
       end
 
-      pq.push( ContextualNode.new( {}, source))
+      pq.push( source)
       visit source
       shortest_distances[source] = 0
+      context[source] = {}
 
       not_found = !found?(source)
 
       while pq.size != 0 && not_found
         raise TimeoutError if timeout?
 
-        contextual_node = pq.pop
-        v = contextual_node.node
-        puts "pq.pop #{v} #{contextual_node.context.inspect} shortest_distances #{shortest_distances[v]}"
+        v = pq.pop
         not_found = !found?(v)
         visit v
 
-        weights = ways(v, contextual_node.context)
+        weights = ways(v, context[v])
         if weights
           weights.keys.each do |w|
             if !visited?(w) and
                 weights[w] and
                 ( shortest_distances[w].nil? || shortest_distances[w] > shortest_distances[v] + weights[w]) and
-                follow_way?(v, w, weights[w], contextual_node.context)
+                follow_way?(v, w, weights[w], context[v])
               shortest_distances[w] = shortest_distances[v] + weights[w]
               previous[w] = v
-              refreshed_context = refresh_context( w, contextual_node.context)
-        puts "pq.push #{w} #{refreshed_context.inspect} shortest_distances =#{shortest_distances[w]}"
-              pq.push( ContextualNode.new( refreshed_context, w))
+              context[w] = refresh_context( w, context[v])
+              pq.push( w)
             end
           end
         end

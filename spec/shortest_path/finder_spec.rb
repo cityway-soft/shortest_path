@@ -7,7 +7,6 @@ class TestContextualFinder < ShortestPath::Finder
     end
 
     def follow_way?(node, destination, weight, context={})
-        puts "call follow_way? #{node} #{destination} #{context.inspect}"
       return context[:edges_count].nil? || context[:edges_count] < 3
     end
 
@@ -31,7 +30,7 @@ describe ShortestPath::Finder do
 
   context "when using an edge_count filter in context " do
       it "should find shortest path in an exemple" do
-        contextual_shortest_path(:e, :s).should == [:e, :b, :c, :d, :s]
+        contextual_shortest_path(:e, :s).should == [:e, :b, :c, :s]
       end
   end
 
