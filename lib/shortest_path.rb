@@ -5,6 +5,7 @@ module ShortestPath
   end
 end
 
+require "shortest_path/contextual_node"
 require "shortest_path/finder"
 require "shortest_path/map"
 
