@@ -1,18 +1,37 @@
 # Shortest Path  [![Build Status](https://travis-ci.org/dryade/shortest_path.png)](http://travis-ci.org/dryade/shortest_path?branch=master) [![Dependency Status](https://gemnasium.com/dryade/shortest_path.png)](https://gemnasium.com/dryade/shortest_path) [![Code Climate](https://codeclimate.com/github/dryade/shortest_path.png)](https://codeclimate.com/github/dryade/shortest_path)
 
-A* ruby implementation to find shortest path and map in a graph.
+A* ruby implementation to find shortest path and map in a graph with :
+ - a timeout to stop research when duration > timeout
+ - a context in a hash for each point in the graph
+ - the possibility to override default methods 
+
 
 Requirements
 ------------
  
-This code has been run and tested on Ruby 1.8 and 1.9
+This code has been run and tested on Ruby 1.9
+
+External Deps
+-------------
+On Debian/Ubuntu/Kubuntu OS : 
+```sh
+sudo apt-get install git
+```
 
 Installation
 ------------
  
 This package is available in RubyGems and can be installed with:
- 
-   gem install shortest_path
+```sh 
+gem install shortest_path
+```
+
+Test
+----
+
+```sh
+bundle exec rake spec
+```
 
 More Information
 ----------------
