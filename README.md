@@ -42,7 +42,39 @@ There is extensive usage documentation available [on the wiki](https://github.co
 Example Usage 
 -------------
 
+Create a basic shortest path finder : 
+```ruby
+# Create a graph
+graph = {   :a => { :e => 3, :b => 1, :c => 3},
+                :b => {:e => 1, :a => 1, :c => 3, :d => 5},
+                :c => {:a => 3, :b => 3, :d => 1, :s => 3},
+                :d => {:b => 5, :c => 1, :s => 1},
+                :e => {:a => 3, :b => 1},
+                :s => {:c => 3, :d => 1} }
+}
+
+# Create a finder
+finder = ShortestPath::Finder.new(:a, :e).tap do |shortest_path|
+  shortest_path.ways_finder = Proc.new { |node| graph[node] }
+end
+
+# Change the timeout in seconds
+finder.timeout = 2
+
+# Call graph result
+finder.path
+
+```
+
+Overwrite shortest path finder : 
+```ruby
+
+# TODO : Class that overwrites shortest path finder
 ...
+
+
+```
+
 
 License
 -------

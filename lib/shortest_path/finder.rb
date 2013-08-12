@@ -46,6 +46,7 @@ module ShortestPath
       true
     end
 
+    # timeout is in seconds
     attr_accessor :timeout
     attr_reader :begin_at, :end_at
 
