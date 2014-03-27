@@ -22,10 +22,43 @@ describe ShortestPath::Finder do
                 :s => {:c => 3, :d => 1} }
   }
 
+  def graph_sample( size)
+      hash = {}
+      0.upto( size ) do |i|
+        0.upto( size ) do |j|
+            hash[ "#{i}-#{j}" ] = {} if hash[ "#{i}-#{j}" ].nil?
+            node_neighbors = hash[ "#{i}-#{j}" ]
+            if i<size
+                node_neighbors[ "#{i+1}-#{j}" ] = 1
+
+                # reverse link
+                hash[ "#{i+1}-#{j}" ] = {} if hash[ "#{i+1}-#{j}" ].nil?
+                hash[ "#{i+1}-#{j}" ][ "#{i}-#{j}" ] = 1
+            end
+            if j<size
+                node_neighbors[ "#{i}-#{j+1}" ] = 1
+
+                # reverse link
+                hash[ "#{i}-#{j+1}" ] = {} if hash[ "#{i}-#{j+1}" ].nil?
+                hash[ "#{i}-#{j+1}" ][ "#{i}-#{j}" ] = 1
+            end
+        end
+      end
+      hash
+  end
+
   def contextual_shortest_path(source, destination, given_graph = graph)
     TestContextualFinder.new(source, destination).tap do |shortest_path|
       shortest_path.ways_finder = Proc.new { |node| given_graph[node] }
     end.path
+  end
+
+  it "should produce test graph" do
+      my_graph = graph_sample(600)
+      start = Time.now
+      result = shortest_path( "150-150", "300-300", my_graph)
+      puts "cost= #{Time.now-start}"
+      puts result
   end
 
   context "when using an edge_count filter in context " do
