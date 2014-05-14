@@ -1,4 +1,4 @@
-require 'pqueue'
+require 'fc'
 
 module ShortestPath
   class Finder
@@ -15,7 +15,7 @@ module ShortestPath
     attr_accessor :ways_finder
 
     def refresh_context( node, context)
-        {}
+      {}
     end
 
     def ways(node, context={})
@@ -73,45 +73,85 @@ module ShortestPath
 
     def path_without_cache
       @begin_at = Time.now
-
-      visited = {}
-      pq = PQueue.new do |x,y|
-        search_heuristic(x) < search_heuristic(y)
-      end
-
-      pq.push( source)
+      
+      pq = ::FastContainers::PriorityQueue.new(:min)
+      # PQueue.new do |x,y| 
+      #   search_heuristic(x) < search_heuristic(y)
+      # end
+      pq.push(source, 0)
       visit source
       shortest_distances[source] = 0
-      context[source] = {}
 
       not_found = !found?(source)
 
-      while pq.size != 0 && not_found
+      while !pq.empty? && not_found
         raise TimeoutError if timeout?
 
         v = pq.pop
         not_found = !found?(v)
-        visit v
 
-        weights = ways(v, context[v])
+        weights = ways(v)
         if weights
           weights.keys.each do |w|
+            w_distance = shortest_distances[v] + weights[w]
+            
             if !visited?(w) and
                 weights[w] and
-                ( shortest_distances[w].nil? || shortest_distances[w] > shortest_distances[v] + weights[w]) and
-                follow_way?(v, w, weights[w], context[v])
-              shortest_distances[w] = shortest_distances[v] + weights[w]
+                ( shortest_distances[w].nil? || shortest_distances[w] > w_distance) and 
+                follow_way?(v, w, weights[w])
+              shortest_distances[w] = w_distance
               previous[w] = v
-              context[w] = refresh_context( w, context[v])
-              pq.push( w)
+              pq.push(w, search_heuristic(w) )
             end
           end
         end
       end
 
       @end_at = Time.now
+      #puts previous.inspect
       not_found ? [] : sorted_array
     end
+    
+    # def path_without_cache
+    #   @begin_at = Time.now
+
+    #   pq = PQueue.new do |x,y|
+    #     search_heuristic(x) < search_heuristic(y)
+    #   end
+
+    #   pq.push( source)
+    #   visit source
+    #   shortest_distances[source] = 0
+    #   context[source] = {}
+
+    #   not_found = !found?(source)
+
+    #   while pq.size != 0 && not_found
+    #     raise TimeoutError if timeout?
+
+    #     v = pq.pop
+    #     not_found = !found?(v)
+    #     visit v
+
+    #     weights = ways(v, context[v])
+    #     if weights
+    #       weights.keys.each do |w|
+    #         if !visited?(w) and
+    #             weights[w] and
+    #             ( shortest_distances[w].nil? || shortest_distances[w] > shortest_distances[v] + weights[w]) and
+    #             follow_way?(v, w, weights[w], context[v])
+    #           shortest_distances[w] = shortest_distances[v] + weights[w]
+    #           previous[w] = v
+    #           context[w] = refresh_context( w, context[v])
+    #           pq.push( w)
+    #         end
+    #       end
+    #     end
+    #   end
+
+    #   @end_at = Time.now
+    #   not_found ? [] : sorted_array
+    # end
 
     def path_with_cache
       @path ||= path_without_cache

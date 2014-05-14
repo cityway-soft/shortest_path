@@ -2,8 +2,8 @@ require 'spec_helper'
 
 class TestContextualFinder < ShortestPath::Finder
     def refresh_context( node, context)
-        count = context[:edges_count] ? context[:edges_count] : 0
-        return { :edges_count => (count + 1)}
+      count = context[:edges_count] ? context[:edges_count] : 0
+      return { :edges_count => (count + 1)}
     end
 
     def follow_way?(node, destination, weight, context={})
@@ -14,12 +14,12 @@ end
 
 describe ShortestPath::Finder do
   let(:graph) {
-    {   :a => { :e => 3, :b => 1, :c => 3},
-                :b => {:e => 1, :a => 1, :c => 3, :d => 5},
-                :c => {:a => 3, :b => 3, :d => 1, :s => 3},
-                :d => {:b => 5, :c => 1, :s => 1},
-                :e => {:a => 3, :b => 1},
-                :s => {:c => 3, :d => 1} }
+    {   :a => { :e => 3, :b => 1, :c => 3 },
+        :b => { :e => 1, :a => 1, :c => 3, :d => 5 },
+        :c => { :a => 3, :b => 3, :d => 1, :s => 3 },
+        :d => { :b => 5, :c => 1, :s => 1 },
+        :e => { :a => 3, :b => 1 },
+        :s => { :c => 3, :d => 1 } }
   }
 
   def graph_sample( size)
@@ -56,14 +56,14 @@ describe ShortestPath::Finder do
   it "should produce test graph" do
       my_graph = graph_sample(600)
       start = Time.now
-      result = shortest_path( "150-150", "300-300", my_graph)
+      result = expect(shortest_path( "150-150", "300-300", my_graph))
       puts "cost= #{Time.now-start}"
-      puts result
+      puts result.inspect
   end
 
   context "when using an edge_count filter in context " do
       it "should find shortest path in an exemple" do
-        contextual_shortest_path(:e, :s).should == [:e, :b, :c, :s]
+        contextual_shortest_path(:e, :s).should == [:e, :b, :c, :d, :s]
       end
   end
 

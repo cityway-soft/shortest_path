@@ -1,3 +1,5 @@
+require 'fc'
+
 module ShortestPath
   class Map
 
@@ -6,6 +8,7 @@ module ShortestPath
 
     def initialize(source)
       @source = source
+      @visited = {}
     end
 
     # Should return a map with accessible nodes and associated weight
@@ -28,33 +31,40 @@ module ShortestPath
       shortest_distances[node]
     end
 
+    def visited?(node)
+      @visited[node]
+    end
+
+    def visit(node)
+      @visited[node] = true
+    end
+
     def map
       @shortest_distances = {}
       @previous = {}
 
-      visited = {}
-      pq = PQueue.new { |x,y| search_heuristic(x) < search_heuristic(y) }
+      pq = ::FastContainers::PriorityQueue.new(:min)
 
-      pq.push(source)
-      visited[source] = true
+      pq.push(source, 0)
+      visit source
       shortest_distances[source] = 0
 
-      while pq.size != 0
+      while !pq.empty?
         v = pq.pop
-        visited[v] = true
+        visit v
 
         weights = ways(v)
         if weights
           weights.keys.each do |w|
             w_distance = shortest_distances[v] + weights[w]
-
-            if !visited[w] and
+            
+            if !visited?(w) and
                 weights[w] and
                 ( shortest_distances[w].nil? || shortest_distances[w] > w_distance) and
                 follow_way?(v, w, weights[w])
               shortest_distances[w] = w_distance
               previous[w] = v
-              pq.push(w)
+              pq.push(w, search_heuristic(w) )
             end
           end
         end
