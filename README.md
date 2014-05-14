@@ -69,14 +69,7 @@ finder.path
 
 ```
 
-Overwrite shortest path finder : 
-```ruby
-
-# TODO : Class that overwrites shortest path finder
-...
-
-
-```
+Overwrite shortest path finder :  Find an example in [activeroad project](https://github.com/dryade/activeroad/blob/master/lib/active_road/shortest_path/finder.rb)
 
 
 License
