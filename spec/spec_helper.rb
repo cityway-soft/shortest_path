@@ -6,7 +6,7 @@ require 'rspec'
 require 'shortest_path' # and any other gems you need
 
 require 'coveralls'
-Coveralls.wear
+Coveralls.wear!
 
 Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
 
