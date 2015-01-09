@@ -1,5 +1,5 @@
 # Shortest Path
-[![Build Status](https://travis-ci.org/dryade/shortest_path.png)](http://travis-ci.org/dryade/shortest_path?branch=master) [![Dependency Status](https://gemnasium.com/dryade/shortest_path.png)](https://gemnasium.com/dryade/shortest_path) [![Code Climate](https://codeclimate.com/github/dryade/shortest_path.png)](https://codeclimate.com/github/dryade/shortest_path) [![Coverage Status](https://img.shields.io/coveralls/dryade/shortest_path.svg)](https://coveralls.io/r/dryade/shortest_path)
+[![Build Status](https://travis-ci.org/cityway-transdev/shortest_path.svg?branch=master)](http://travis-ci.org/cityway-transdev/shortest_path) [![Dependency Status](https://gemnasium.com/cityway-transdev/shortest_path.png)](https://gemnasium.com/cityway-transdev/shortest_path) [![Code Climate](https://codeclimate.com/github/cityway-transdev/shortest_path.png)](https://codeclimate.com/github/cityway-transdev/shortest_path) [![Coverage Status](https://img.shields.io/coveralls/cityway-transdev/shortest_path.svg)](https://coveralls.io/r/cityway-transdev/shortest_path)
 
 A* ruby implementation to find shortest path and map in a graph with :
  - a timeout to stop research when duration > timeout
