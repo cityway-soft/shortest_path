@@ -54,11 +54,11 @@ describe ShortestPath::Finder do
   end
 
   it "should produce test graph" do
-      my_graph = graph_sample(600)
-      start = Time.now
-      result = expect(shortest_path( "150-150", "300-300", my_graph))
-      puts "cost= #{Time.now-start}"
-      puts result.inspect
+    my_graph = graph_sample(600)
+    start = Time.now
+    result = shortest_path( "150-150", "300-300", my_graph)
+    #puts result.inspect
+    expect(Time.now-start).to be < 5    
   end
 
   context "when using an edge_count filter in context " do

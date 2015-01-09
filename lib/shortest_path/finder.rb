@@ -68,7 +68,7 @@ module ShortestPath
     end
 
     def found?(node)
-      node == destination
+      node == destination      
     end
 
     def path_without_cache
@@ -84,13 +84,15 @@ module ShortestPath
 
       not_found = !found?(source)
 
-      while !pq.empty? && not_found
+      while pq.size != 0 && not_found
         raise TimeoutError if timeout?
 
         v = pq.pop
         not_found = !found?(v)
+        visit v
 
         weights = ways(v)
+
         if weights
           weights.keys.each do |w|
             w_distance = shortest_distances[v] + weights[w]
